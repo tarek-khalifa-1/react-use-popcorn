@@ -1,8 +1,8 @@
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie, onRemove }) {
   return (
     <li key={movie.imdbID}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+      <img src={movie.poster} alt={`${movie.Title} poster`} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -16,6 +16,9 @@ function WatchedMovie({ movie }) {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        <button className="btn-delete" onClick={() => onRemove(movie.imdbID)}>
+          X
+        </button>
       </div>
     </li>
   );

@@ -3,12 +3,23 @@ import Loader from "../Loader/loader";
 import StarRating from "../StarRating/StarRating";
 import { API_URL } from "../../Config";
 
-function MovieDetails({ selectedId, onCloseMovie }) {
+function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+  watchedMovies,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState(0);
-  const isWatched = false;
+  const isWatched = watchedMovies
+    .map((movie) => movie.imdbID)
+    .includes(selectedId);
+
+  const watchedUserRating = watchedMovies.find(
+    (movie) => movie.imdbID === selectedId,
+  )?.userRating;
 
   const {
     Title: title,
@@ -23,6 +34,21 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     Genre: genre,
   } = movie;
 
+  function handleAddWatchedMovie() {
+    const watchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      runtime: Number(runtime.split(" ").at(0)),
+      imdbRating: Number(imdbRating),
+      userRating,
+    };
+
+    onAddWatched(watchedMovie);
+    onCloseMovie();
+  }
+
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
@@ -30,7 +56,6 @@ function MovieDetails({ selectedId, onCloseMovie }) {
         const res = await fetch(`${API_URL}i=${selectedId}`);
         if (!res.ok) throw new Error("can't fetch movie");
         const data = await res.json();
-        console.log(data);
         setMovie(data);
       } catch (err) {
         setError(err.message);
@@ -40,6 +65,13 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     }
     fetchMovieDetails();
   }, [selectedId]);
+
+  useEffect(() => {
+    if (title === undefined) return;
+    document.title = `Movie | ${title}`;
+
+    return () => (document.title = "usePopcorn");
+  }, [title]);
 
   return (
     <div className="details">
@@ -65,15 +97,28 @@ function MovieDetails({ selectedId, onCloseMovie }) {
             </div>
           </header>
 
-          <p>{"avgRating"}</p>
+          {/* <p>{"avgRating"}</p> */}
 
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={24}
-                onSetRating={setUserRating}
-              />
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAddWatchedMovie}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated this movie {watchedUserRating} <span>⭐️</span>
+                </p>
+              )}
             </div>
             <p>
               <em>{plot}</em>
