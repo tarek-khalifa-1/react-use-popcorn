@@ -47,8 +47,9 @@ function MovieDetails({
       imdbRating: Number(imdbRating),
       userRating,
     };
-
+    // add movie to watched state
     onAddWatched(watchedMovie);
+    // close from ui
     onCloseMovie();
   }
 

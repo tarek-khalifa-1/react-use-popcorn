@@ -15,8 +15,11 @@ import { API_URL } from "../Config";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
-  const [query, setQuery] = useState("");
+  const [watched, setWatched] = useState(function () {
+    const stored = localStorage.getItem("watched");
+    return JSON.parse(stored) || [];
+  });
+  const [query, setQuery] = useState("interstellar");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedID] = useState(null);
@@ -30,15 +33,16 @@ function App() {
   }
 
   function handleAddWatchedMovie(watchedMovie) {
-    const x = watched.slice();
-    const exists = x.find((x) => x.imdbID === watchedMovie.imdbID);
-    if (exists) return;
     setWatched((watched) => [...watched, watchedMovie]);
   }
 
   function handleRemoveWatchedMovie(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
+
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
 
   useEffect(() => {
     const controller = new AbortController();
