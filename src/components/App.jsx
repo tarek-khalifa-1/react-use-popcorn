@@ -71,6 +71,7 @@ function App() {
       setError("");
       return;
     }
+    handleCloseMovie();
     fetchMovies();
 
     return () => controller.abort();
@@ -87,9 +88,7 @@ function App() {
       <Main>
         <Box>
           {isLoading && <Loader />}
-
           {error && <ErrorMessage message={error} />}
-
           {!isLoading && !error && (
             <MovieList data={movies} onSelectMovie={handleSelectMovie} />
           )}

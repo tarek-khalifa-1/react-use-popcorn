@@ -39,7 +39,10 @@ function MovieDetails({
       imdbID: selectedId,
       title,
       year,
-      poster,
+      poster:
+        poster === "N/A"
+          ? "https://png.pngtree.com/element_pic/16/11/18/4f829e85866bd52d062ca58b4e1ecef5.png"
+          : poster,
       runtime: Number(runtime.split(" ").at(0)),
       imdbRating: Number(imdbRating),
       userRating,
@@ -48,6 +51,17 @@ function MovieDetails({
     onAddWatched(watchedMovie);
     onCloseMovie();
   }
+
+  useEffect(() => {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    }
+    document.addEventListener("keydown", callback);
+
+    return () => document.removeEventListener("keydown", callback);
+  }, [onCloseMovie]);
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -83,7 +97,16 @@ function MovieDetails({
             <button className="btn-back" onClick={onCloseMovie}>
               &larr;
             </button>
-            <img src={poster} alt={`Poster of ${title} movie`} />
+            {movie.Poster === "N/A" ? (
+              <img
+                src={
+                  "https://png.pngtree.com/element_pic/16/11/18/4f829e85866bd52d062ca58b4e1ecef5.png"
+                }
+                alt={`${title} poster`}
+              />
+            ) : (
+              <img src={poster} alt={`${title} poster`} />
+            )}
             <div className="details-overview">
               <h2>{title}</h2>
               <p>
@@ -97,7 +120,7 @@ function MovieDetails({
             </div>
           </header>
 
-          {/* <p>{"avgRating"}</p> */}
+          {/* <p>{avgRating}</p> */}
 
           <section>
             <div className="rating">
