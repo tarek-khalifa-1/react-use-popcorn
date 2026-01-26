@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Main from "./main/Main";
 import Logo from "./logo/logo";
@@ -8,6 +8,10 @@ import Box from "./Box/Box";
 import MovieList from "./MovieList/MovieList";
 import WatchedSummary from "./WatchedSummary/WatchedSummary";
 import WatchedMoviesList from "./WatchedMoviesList/WatchedMoviesList";
+import Loader from "./Loader/loader";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
+import MovieDetails from "./MovieDetails/MovieDetails";
+import { API_URL } from "../Config";
 
 const tempMovieData = [
   {
@@ -57,26 +61,79 @@ const tempWatchedData = [
 ];
 
 function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [query, setQuery] = useState("inception");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedID] = useState(null);
+
+  function handleSelectMovie(id) {
+    setSelectedID((curSelected) => (id === curSelected ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedID(null);
+  }
+
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);
+        setError("");
+        const res = await fetch(`${API_URL}s=${query}`);
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies");
+
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("Movie not found");
+        setMovies(data.Search);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+    fetchMovies();
+  }, [query]);
 
   return (
     <>
       <Navbar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults data={movies} />
       </Navbar>
 
       <Main>
         <Box>
-          <MovieList data={movies} />
-        </Box>
+          {isLoading && <Loader />}
 
+          {error && <ErrorMessage message={error} />}
+
+          {!isLoading && !error && (
+            <MovieList data={movies} onSelectMovie={handleSelectMovie} />
+          )}
+        </Box>
         <Box>
           <>
-            <WatchedSummary data={watched} />
-            <WatchedMoviesList data={watched} />
+            {selectedId ? (
+              <MovieDetails
+                selectedId={selectedId}
+                onCloseMovie={handleCloseMovie}
+              />
+            ) : (
+              <>
+                <WatchedSummary data={watched} />
+                <WatchedMoviesList data={watched} />
+              </>
+            )}
           </>
         </Box>
       </Main>
