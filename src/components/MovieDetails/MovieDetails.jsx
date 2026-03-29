@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loader from "../Loader/loader";
 import StarRating from "../StarRating/StarRating";
 import { API_URL } from "../../Config";
+import { useKey } from "../../hooks/useKey";
 
 function MovieDetails({
   selectedId,
@@ -13,6 +14,12 @@ function MovieDetails({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState(0);
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (userRating) countRef.current++;
+  }, [userRating]);
+
   const isWatched = watchedMovies
     .map((movie) => movie.imdbID)
     .includes(selectedId);
@@ -46,23 +53,16 @@ function MovieDetails({
       runtime: Number(runtime.split(" ").at(0)),
       imdbRating: Number(imdbRating),
       userRating,
+      countRatingDecissions: countRef.current,
     };
+
     // add movie to watched state
     onAddWatched(watchedMovie);
     // close from ui
     onCloseMovie();
   }
 
-  useEffect(() => {
-    function callback(e) {
-      if (e.code === "Escape") {
-        onCloseMovie();
-      }
-    }
-    document.addEventListener("keydown", callback);
-
-    return () => document.removeEventListener("keydown", callback);
-  }, [onCloseMovie]);
+  useKey("Escape", onCloseMovie);
 
   useEffect(() => {
     async function fetchMovieDetails() {

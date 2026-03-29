@@ -1,4 +1,4 @@
-function Search({ query, setQuery }) {
+function Search({ query, setQuery, inputEl }) {
   return (
     <input
       className="search"
@@ -6,6 +6,7 @@ function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
