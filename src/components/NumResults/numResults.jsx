@@ -1,4 +1,4 @@
-function numResults({ movies }) {
+function NumResults({ movies }) {
   return (
     <p className="num-results">
       Found <strong>{movies?.length}</strong> results
@@ -6,4 +6,4 @@ function numResults({ movies }) {
   );
 }
 
-export default numResults;
+export default NumResults;
