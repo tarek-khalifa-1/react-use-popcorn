@@ -12,6 +12,7 @@ import MovieDetails from "./MovieDetails/MovieDetails";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useKey } from "../hooks/useKey";
+import Loader from "./Loader/Loader";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -52,7 +53,7 @@ function App() {
 
       <Main>
         <Box>
-          {isLoading && <p>loading......</p>}
+          {isLoading && <Loader />}
           {error && <ErrorMessage message={error} />}
           {!isLoading && !error && (
             <MovieList data={movies} onSelectMovie={handleSelectMovie} />
