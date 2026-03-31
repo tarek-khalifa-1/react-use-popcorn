@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Main from "./Main/Main";
 import Logo from "./Logo/Logo";
+import NumResults from "./NumResults/NumResults";
 import Search from "./Search/Search";
 import Box from "./Box/Box";
 import MovieList from "./MovieList/MovieList";
