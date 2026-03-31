@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Navbar from "./Navbar/Navbar";
-import Main from "./main/Main";
+import Main from "./Main/Main";
 import Logo from "./logo/logo";
 import Search from "./search/Search";
 import NumResults from "./numResults/numResults";
