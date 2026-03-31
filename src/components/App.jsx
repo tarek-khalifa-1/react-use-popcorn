@@ -4,7 +4,6 @@ import Main from "./Main/Main";
 import Logo from "./Logo/Logo";
 import Search from "./Search/Search";
 import Box from "./Box/Box";
-import NumResults from "./NumResults/NumResults.jsx";
 import MovieList from "./MovieList/MovieList";
 import WatchedSummary from "./WatchedSummary/WatchedSummary";
 import WatchedMoviesList from "./WatchedMoviesList/WatchedMoviesList";
