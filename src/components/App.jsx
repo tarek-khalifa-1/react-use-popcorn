@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Main from "./Main/Main";
-import Logo from "./logo/logo";
-import Search from "./search/Search";
-import NumResults from "./numResults/numResults";
+import Logo from "./Logo/Logo";
+import Search from "./Search/Search";
+import NumResults from "./NumResults/NumResults";
 import Box from "./Box/Box";
 import MovieList from "./MovieList/MovieList";
 import WatchedSummary from "./WatchedSummary/WatchedSummary";
