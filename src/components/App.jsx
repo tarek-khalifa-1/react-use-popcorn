@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Main from "./Main/Main";
 import Logo from "./Logo/Logo";
-import Search from "./Search/Search";
 import NumResults from "./NumResults/NumResults";
+import Search from "./Search/Search";
 import Box from "./Box/Box";
 import MovieList from "./MovieList/MovieList";
 import WatchedSummary from "./WatchedSummary/WatchedSummary";
@@ -49,7 +49,7 @@ function App() {
       <Navbar>
         <Logo />
         <Search query={query} setQuery={setQuery} inputEl={inputEl} />
-        <NumResults data={movies} />
+        <NumResults movies={movies} />
       </Navbar>
 
       <Main>
