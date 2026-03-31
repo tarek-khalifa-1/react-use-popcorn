@@ -12,6 +12,7 @@ import MovieDetails from "./MovieDetails/MovieDetails";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useKey } from "../hooks/useKey";
+import Loader from "./Loader/Loader";
 
 function App() {
   const [query, setQuery] = useState("");
