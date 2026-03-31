@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Loader from "../Loader/loader";
 import StarRating from "../StarRating/StarRating";
 import { API_URL } from "../../Config";
 import { useKey } from "../../hooks/useKey";
@@ -91,7 +90,7 @@ function MovieDetails({
   return (
     <div className="details">
       {isLoading ? (
-        <Loader />
+        <p>Loading.........</p>
       ) : (
         <>
           <header>
