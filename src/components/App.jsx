@@ -7,7 +7,7 @@ import Box from "./Box/Box";
 import MovieList from "./MovieList/MovieList";
 import WatchedSummary from "./WatchedSummary/WatchedSummary";
 import WatchedMoviesList from "./WatchedMoviesList/WatchedMoviesList";
-import Loader from "./Loader/loader";
+import Loader from "./Loader/Loader";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import MovieDetails from "./MovieDetails/MovieDetails";
 import { useMovies } from "../hooks/useMovies";
